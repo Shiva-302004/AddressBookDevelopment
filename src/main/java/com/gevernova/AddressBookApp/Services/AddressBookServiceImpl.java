@@ -28,46 +28,61 @@ public class AddressBookServiceImpl implements AddressBookService {
      * Add a new contact
      */
     @Override
-    public AddressBook addContact(AddressBookDTO dto) {
-        AddressBook contact = new AddressBook();
-
-        // Mapping DTO to Entity
-        contact.setName(dto.getName());
-        contact.setEmail(dto.getEmail());
-        contact.setPhone(dto.getPhone());
-
-        return repository.save(contact);
+    public String addContact(AddressBookDTO dto) {
+        AddressBook contact = AddressBook.builder()
+                .phone(dto.getPhone())
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .build();
+        repository.save(contact);
+        return "new address created successfully";
     }
 
     /**
      * Fetch all contacts
      */
     @Override
-    public List<AddressBook> getAllContacts() {
-        return repository.findAll();
+    public List<AddressBookDTO> getAllContacts() {
+        List<AddressBook> books=repository.findAll();
+        return books.stream()
+                .map(this::transform).toList();
     }
 
+    private AddressBookDTO transform(AddressBook book){
+        return AddressBookDTO.builder()
+                .name(book.getName())
+                .phone(book.getPhone())
+                .email(book.getEmail())
+                .build();
+    }
     /**
      * Fetch contact by ID
      */
     @Override
-    public AddressBook getContactById(Long id) {
-        return repository.findById(id)
+    public AddressBookDTO getContactById(Long id) {
+       AddressBook book=repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+       return AddressBookDTO.builder()
+               .name(book.getName())
+               .phone(book.getPhone())
+               .email(book.getEmail())
+               .build();
     }
 
     /**
      * Update contact details
      */
     @Override
-    public AddressBook updateContact(Long id, AddressBookDTO dto) {
-        AddressBook contact = getContactById(id);
+    public String updateContact(Long id, AddressBookDTO dto) {
+        AddressBook contact = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
 
         contact.setName(dto.getName());
         contact.setEmail(dto.getEmail());
         contact.setPhone(dto.getPhone());
 
-        return repository.save(contact);
+        repository.save(contact);
+        return "contact updated successsfully";
     }
 
     /**

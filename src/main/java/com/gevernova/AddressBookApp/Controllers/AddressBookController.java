@@ -28,8 +28,8 @@ public class AddressBookController {
      * Create new contact
      */
     @PostMapping
-    public ResponseEntity<AddressBook> addContact(@RequestBody AddressBookDTO dto) {
-        AddressBook savedContact = service.addContact(dto);
+    public ResponseEntity<String> addContact(@RequestBody AddressBookDTO dto) {
+        String savedContact = service.addContact(dto);
         return ResponseEntity.ok(savedContact);
     }
 
@@ -37,7 +37,7 @@ public class AddressBookController {
      * Get all contacts
      */
     @GetMapping
-    public ResponseEntity<List<AddressBook>> getAllContacts() {
+    public ResponseEntity<List<AddressBookDTO>> getAllContacts() {
         return ResponseEntity.ok(service.getAllContacts());
     }
 
@@ -45,7 +45,7 @@ public class AddressBookController {
      * Get contact by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AddressBook> getContactById(@PathVariable Long id) {
+    public ResponseEntity<AddressBookDTO> getContactById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getContactById(id));
     }
 
@@ -53,7 +53,7 @@ public class AddressBookController {
      * Update contact by ID
      */
     @PutMapping("/{id}")
-    public ResponseEntity<AddressBook> updateContact(
+    public ResponseEntity<String> updateContact(
             @PathVariable Long id,
             @RequestBody AddressBookDTO dto) {
 

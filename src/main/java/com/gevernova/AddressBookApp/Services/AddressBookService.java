@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface AddressBookService {
 
-    AddressBook addContact(AddressBookDTO dto);
+    String addContact(AddressBookDTO dto);
 
-    List<AddressBook> getAllContacts();
+    List<AddressBookDTO> getAllContacts();
 
-    AddressBook getContactById(Long id);
+    AddressBookDTO getContactById(Long id);
 
-    AddressBook updateContact(Long id, AddressBookDTO dto);
+    String updateContact(Long id, AddressBookDTO dto);
 
     void deleteContact(Long id);
 }
