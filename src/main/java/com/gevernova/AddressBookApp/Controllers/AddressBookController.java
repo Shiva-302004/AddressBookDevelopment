@@ -2,8 +2,8 @@ package com.gevernova.AddressBookApp.Controllers;
 
 
 import com.gevernova.AddressBookApp.DTO.AddressBookDTO;
-import com.gevernova.AddressBookApp.Entity.AddressBook;
 import com.gevernova.AddressBookApp.Services.AddressBookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class AddressBookController {
      * Create new contact
      */
     @PostMapping
-    public ResponseEntity<String> addContact(@RequestBody AddressBookDTO dto) {
+    public ResponseEntity<String> addContact(@Valid @RequestBody AddressBookDTO dto) {
         String savedContact = service.addContact(dto);
         return ResponseEntity.ok(savedContact);
     }
@@ -55,7 +55,7 @@ public class AddressBookController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateContact(
             @PathVariable Long id,
-            @RequestBody AddressBookDTO dto) {
+            @Valid @RequestBody AddressBookDTO dto) {
 
         return ResponseEntity.ok(service.updateContact(id, dto));
     }
