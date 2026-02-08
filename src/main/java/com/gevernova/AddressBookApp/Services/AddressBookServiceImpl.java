@@ -6,6 +6,7 @@ package com.gevernova.AddressBookApp.Services;
 import com.gevernova.AddressBookApp.DTO.AddressBookDTO;
 import com.gevernova.AddressBookApp.Entity.AddressBook;
 import com.gevernova.AddressBookApp.Repository.AddressBookRepository;
+import com.gevernova.AddressBookApp.globalexception.IdNotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     @Override
     public AddressBookDTO getContactById(Long id) {
        AddressBook book=repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+                .orElseThrow(() -> new IdNotFound("Contact not found with id: " + id));
        log.info("address fetched for id :  " + id);
        return AddressBookDTO.builder()
                .name(book.getName())
@@ -80,7 +81,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     @Override
     public String updateContact(Long id, AddressBookDTO dto) {
         AddressBook contact = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+                .orElseThrow(() -> new IdNotFound("Contact not found with id: " + id));
 
         contact.setName(dto.getName());
         contact.setEmail(dto.getEmail());
