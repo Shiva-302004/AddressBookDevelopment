@@ -6,6 +6,7 @@ package com.gevernova.AddressBookApp.Services;
 import com.gevernova.AddressBookApp.DTO.AddressBookDTO;
 import com.gevernova.AddressBookApp.Entity.AddressBook;
 import com.gevernova.AddressBookApp.Repository.AddressBookRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * Contains actual business logic
  */
 @Service
+@Slf4j
 public class AddressBookServiceImpl implements AddressBookService {
 
     /**
@@ -35,6 +37,7 @@ public class AddressBookServiceImpl implements AddressBookService {
                 .name(dto.getName())
                 .build();
         repository.save(contact);
+        log.info("new address created successfully");
         return "new address created successfully";
     }
 
@@ -44,6 +47,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     @Override
     public List<AddressBookDTO> getAllContacts() {
         List<AddressBook> books=repository.findAll();
+        log.info("all addresses fetched successfully");
         return books.stream()
                 .map(this::transform).toList();
     }
@@ -62,6 +66,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     public AddressBookDTO getContactById(Long id) {
        AddressBook book=repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+       log.info("address fetched for id :  " + id);
        return AddressBookDTO.builder()
                .name(book.getName())
                .phone(book.getPhone())
@@ -82,6 +87,7 @@ public class AddressBookServiceImpl implements AddressBookService {
         contact.setPhone(dto.getPhone());
 
         repository.save(contact);
+        log.info("contact updated successsfully");
         return "contact updated successsfully";
     }
 
@@ -90,6 +96,7 @@ public class AddressBookServiceImpl implements AddressBookService {
      */
     @Override
     public void deleteContact(Long id) {
+        log.info("address deleted for id : "+id);
         repository.deleteById(id);
     }
 }
